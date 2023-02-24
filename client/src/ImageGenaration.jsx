@@ -5,14 +5,20 @@ const ImageGenaration = () => {
     const [query,setQuery]=useState("");
     const [imageUrl,setImageUrl]=useState("");
     const generateImage=async ()=>{
+      const data ={
+        text:query
+      }
+      setQuery("");
       try {
         let response = await fetch("http://localhost:8080/generateImage",{
           method:"POST",
-          body:{text:query,number:1,size:"1024x1024"},
+          body:JSON.stringify(data),
           headers:{"Content-Type":"application/json"}
         });
+        console.log(response);
         let result = await response.json();
-        console.log(result);
+        setImageUrl(result.data[0].url);
+        console.log(result.data[0].url);
       } catch (error) {
         console.log(error);
       }
