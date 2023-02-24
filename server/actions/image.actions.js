@@ -1,13 +1,14 @@
 const { Configuration, OpenAIApi } = require("openai");
+require("dotenv").config();
 
 const configuration = new Configuration({
-  apiKey:"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"
+  apiKey:process.env.OPEN_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
 
 const generateImage=async(req,res)=>{
-    const { text, number,size }=req.body;
+    let { text, number,size }=req.body;
     if( !number ){
       number=1;
     }
@@ -17,7 +18,7 @@ const generateImage=async(req,res)=>{
     try {
       let response = await openai.createImage({
         prompt:text,
-        n: +number,
+        n: number,
         size:size,
       });
       res.send({data:response.data.data});
